@@ -18,7 +18,6 @@ def extract_features(audio_data, sample_rate):
     # Reshape the features to match the expected input shape of the model
     features = np.expand_dims(mfccs_scaled, axis=0)
     features = np.expand_dims(features, axis=-1)
-    features = tf.image.resize(features, [162, 1])  # Reshape to (162, 1)
     return features
 
 # Main function for creating the Streamlit app
@@ -41,6 +40,7 @@ def main():
             if st.button('Recognize Emotion'):
                 try:
                     features = extract_features(audio, sample_rate)
+                    features = tf.image.resize(features, [162, 1])  # Reshape to (162, 1)
                     predicted_probabilities = model.predict(features)[0]
                     predicted_emotion = emotion_labels[np.argmax(predicted_probabilities)]
                     st.success(f'Predicted Emotion: {predicted_emotion}')
