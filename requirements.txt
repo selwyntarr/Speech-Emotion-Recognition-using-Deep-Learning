@@ -2,4 +2,3 @@ streamlit
 tensorflow
 librosa
 numpy
-io
