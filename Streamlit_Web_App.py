@@ -11,7 +11,8 @@ emotion_labels = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad']
 
 # Function to extract audio features from the uploaded audio file
 def extract_features(audio_data):
-    y, sr = librosa.load(audio_data, sr=None)
+    audio_bytes = io.BytesIO(audio_data)
+    y, sr = librosa.load(audio_bytes, sr=None)
     mfccs = librosa.feature.mfcc(y, sr=sr, n_mfcc=40)
     mfccs_scaled = np.mean(mfccs.T, axis=0)
     return mfccs_scaled
