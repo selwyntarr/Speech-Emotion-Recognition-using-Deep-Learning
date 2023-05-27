@@ -14,7 +14,7 @@ emotion_labels = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad']
 def extract_features(audio_data):
     audio_bytes = io.BytesIO(audio_data)
     y, sr = librosa.load(audio_bytes, sr=None)
-    mfccs = librosa.feature.mfcc(y, sr=sr, n_mfcc=40)
+    mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=40)
     mfccs_scaled = np.mean(mfccs.T, axis=0)
     return mfccs_scaled
 
