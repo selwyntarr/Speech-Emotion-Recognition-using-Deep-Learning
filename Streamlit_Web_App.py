@@ -28,11 +28,14 @@ def main():
         st.audio(audio_data, format='audio/wav')
 
         if st.button('Recognize Emotion'):
-            features = extract_features(audio_data)
-            features = np.expand_dims(features, axis=0)
-            predicted_probabilities = model.predict(features)[0]
-            predicted_emotion = emotion_labels[np.argmax(predicted_probabilities)]
-            st.success(f'Predicted Emotion: {predicted_emotion}')
+            try:
+                features = extract_features(audio_data)
+                features = np.expand_dims(features, axis=0)
+                predicted_probabilities = model.predict(features)[0]
+                predicted_emotion = emotion_labels[np.argmax(predicted_probabilities)]
+                st.success(f'Predicted Emotion: {predicted_emotion}')
+            except Exception as e:
+                st.error(f'Error: {e}')
 
 if __name__ == '__main__':
     main()
