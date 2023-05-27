@@ -19,7 +19,7 @@ def extract_features(audio_data):
     # Reshape the features to match the expected input shape of the model
     features = np.expand_dims(mfccs_scaled, axis=0)
     features = np.expand_dims(features, axis=-1)
-    features = tf.image.resize(features, [162, 1])  # Reshape to (162, 1)
+    features = tf.image.resize(features, [173, 1])  # Reshape to (173, 1)
     return features
 
 # Main function for creating the Streamlit app
