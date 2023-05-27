@@ -10,8 +10,8 @@ model = tf.keras.models.load_model('ltsm_best_weights.hdf5')
 emotion_labels = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad']
 
 # Function to extract audio features from the uploaded audio file
-def extract_features(audio_path):
-    y, sr = librosa.load(audio_path, sr=None)
+def extract_features(audio_data):
+    y, sr = librosa.load(audio_data, sr=None)
     mfccs = librosa.feature.mfcc(y, sr=sr, n_mfcc=40)
     mfccs_scaled = np.mean(mfccs.T, axis=0)
     return mfccs_scaled
@@ -24,14 +24,11 @@ def main():
     audio_file = st.file_uploader('Upload Audio', type=['wav'])
 
     if audio_file is not None:
-        audio_path = 'uploaded_audio.wav'
-        with open(audio_path, 'wb') as f:
-            f.write(audio_file.read())
-
-        st.audio(audio_file, format='audio/wav')
+        audio_data = audio_file.read()
+        st.audio(audio_data, format='audio/wav')
 
         if st.button('Recognize Emotion'):
-            features = extract_features(audio_path)
+            features = extract_features(audio_data)
             features = np.expand_dims(features, axis=0)
             predicted_probabilities = model.predict(features)[0]
             predicted_emotion = emotion_labels[np.argmax(predicted_probabilities)]
