@@ -8,7 +8,7 @@ import io
 model = tf.keras.models.load_model('ser_best_weights.hdf5')
 
 # Define emotion labels
-emotion_labels = ['angry', 'disgust', 'fear', 'happy', 'neutral']
+emotion_labels = ['angry', 'disgust', 'fear', 'happy', 'neutral','talo']
 
 # Function to extract audio features from the uploaded audio file
 def extract_features(audio_data):
