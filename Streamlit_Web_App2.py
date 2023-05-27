@@ -5,7 +5,7 @@ import numpy as np
 import io
 
 # Load the pre-trained model
-model = tf.keras.models.load_model('cnn_ltsm_best_weights')
+model = tf.keras.models.load_model('cnn_ltsm_best_weights.hdf5')
 
 # Define emotion labels
 emotion_labels = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad']
