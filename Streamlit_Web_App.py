@@ -3,6 +3,7 @@ import tensorflow as tf
 import librosa
 import numpy as np
 import io
+from PIL import Image
 
 # Load the pre-trained model
 model = tf.keras.models.load_model('ltsm_best_weights1.hdf5')
@@ -12,13 +13,15 @@ emotion_labels = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad']
 
 # Function to extract audio features from the uploaded audio file
 def extract_features(audio_data, sample_rate):
-    y = audio_data.astype(np.float32)
-    mfccs = librosa.feature.mfcc(y=y, sr=sample_rate, n_mfcc=40)
-    mfccs_scaled = np.mean(mfccs.T, axis=0)
-    # Reshape the features to match the expected input shape of the model
-    features = np.expand_dims(mfccs_scaled, axis=0)
-    features = np.expand_dims(features, axis=-1)
-    return features
+    # Resample audio to a fixed sample rate
+    y = librosa.resample(audio_data, sample_rate, 22050)
+    # Compute spectrogram
+    D = librosa.stft(y)
+    spect = librosa.amplitude_to_db(np.abs(D), ref=np.max)
+    # Resize spectrogram to match the expected input shape of the model
+    spect = tf.image.resize(spect, [162, 128])
+    spect = tf.expand_dims(spect, axis=-1)
+    return spect
 
 # Main function for creating the Streamlit app
 def main():
@@ -33,14 +36,14 @@ def main():
         
         try:
             # Load audio data and get sample rate
-            audio, sample_rate = librosa.load(io.BytesIO(audio_bytes), sr=None)
+            audio, sample_rate = librosa.load(io.BytesIO(audio_bytes), sr=None, mono=True)
             
             st.audio(audio_data, format='audio/wav')
 
             if st.button('Recognize Emotion'):
                 try:
                     features = extract_features(audio, sample_rate)
-                    features = tf.image.resize(features, [162, 1])  # Reshape to (162, 1)
+                    features = tf.expand_dims(features, axis=0)
                     predicted_probabilities = model.predict(features)[0]
                     predicted_emotion = emotion_labels[np.argmax(predicted_probabilities)]
                     st.success(f'Predicted Emotion: {predicted_emotion}')
