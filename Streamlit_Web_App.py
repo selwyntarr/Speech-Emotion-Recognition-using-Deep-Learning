@@ -4,7 +4,7 @@ import librosa
 import numpy as np
 
 # Load the pre-trained model
-model = tf.keras.models.load_model('ltsm_best_weights.hdf5')
+model = tf.keras.models.load_model('ltsm_best_weights1.hdf5')
 
 # Define emotion labels
 emotion_labels = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad']
