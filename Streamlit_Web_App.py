@@ -24,7 +24,7 @@ def extract_features(audio_data):
 
 # Main function for creating the Streamlit app
 def main():
-    st.title('Speech Emotion Recognition')
+    st.title('Speech Emotion Recognition using LSTM')
     st.write('Upload an audio file (.wav or .mp3) and check the predicted emotion!')
 
     audio_file = st.file_uploader('Upload Audio', type=['wav', 'mp3'])
