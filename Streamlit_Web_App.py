@@ -16,7 +16,10 @@ def extract_features(audio_data):
     y, sr = librosa.load(audio_bytes, sr=None)
     mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=40)
     mfccs_scaled = np.mean(mfccs.T, axis=0)
-    return mfccs_scaled
+    # Reshape the features to match the expected input shape of the model
+    features = np.expand_dims(mfccs_scaled, axis=0)
+    features = np.expand_dims(features, axis=-1)
+    return features
 
 # Main function for creating the Streamlit app
 def main():
