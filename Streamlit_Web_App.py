@@ -2,6 +2,7 @@ import streamlit as st
 import tensorflow as tf
 import librosa
 import numpy as np
+import io
 
 # Load the pre-trained model
 model = tf.keras.models.load_model('ltsm_best_weights1.hdf5')
